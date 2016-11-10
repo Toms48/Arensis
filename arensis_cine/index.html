@@ -1,0 +1,89 @@
+<html>
+<head>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<title>Arensis Cine</title>
+</head>
+<body bgcolor="#FFFFFF">
+  <div align="center">
+  <input type="file" id = "entrada" textcolor="#FFFFFF" accept="video/"><br><br>
+  <video controls id="reproductor" width="50%" height="50%">
+  </div>
+
+  <script>
+
+  var estable = true; //Corrección del seeking
+
+  //Conexión al server de Grumpy World
+  var socket = io.connect("http://grumpyworld-arensisgames.rhcloud.com/");
+  var sala_entrar = prompt("Escribe el nombre de la sala de cine:"); //Establecer sala
+  var entrar = {
+    sala: sala_entrar
+  }
+  socket.emit("arensis cine entrar", entrar);
+
+  vid = document.getElementById("reproductor");
+
+  //Función para cargar el video
+  document.getElementById("entrada").onchange = function() {
+    var fileURL = URL.createObjectURL(this.files[0])
+    vid.src = fileURL;
+  }
+
+
+  //Función para recibir comandos
+  socket.on('arensis cine', function(obj){
+    if(estable){
+    switch(obj.accion){
+      case "reproducir":
+        vid.currentTime = obj.tiempo;
+        vid.play();
+        break;
+      case "pausa":
+        vid.currentTime = obj.tiempo;
+        vid.pause();
+        break;
+    }
+  }
+  });
+
+  //Función para evento "reproducir"
+  vid.onplay = function(){
+    var obj = {
+      sala: sala_entrar,
+      accion: "reproducir",
+      tiempo: vid.currentTime
+    }
+    socket.emit("arensis cine", obj);
+  }
+
+  //Función para evento "pausa"
+  vid.onpause = function(){
+    var obj = {
+      sala: sala_entrar,
+      accion: "pausa",
+      tiempo: vid.currentTime
+    }
+    socket.emit("arensis cine", obj);
+  }
+
+  //Corrección del seeking
+  vid.onseeking = function(){
+    estable = false;
+  }
+  vid.onseeked = function(){
+    estable = true;
+  }
+
+  //Pausa y reproducción pulsando en el video
+  vid.onclick = function(){
+    if(vid.paused){
+      vid.play();
+    }
+    else{
+      vid.pause();
+    }
+  }
+
+  </script>
+</body>
+</html>

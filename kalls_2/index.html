@@ -1,0 +1,389 @@
+<html>
+<body bgcolor="006600">
+<style>
+#canvas{border:1px solid black;}
+</style>
+
+<p align="center">
+<img src="./img/fondo.png" id="fondo" style='display:none'>
+<img src="./img/fondo_.bmp" id="fondo_" style='display:none'>
+<img src="./img/p1.png" id="p1" style='display:none'>
+<img src="./img/p2.png" id="p2" style='display:none'>
+<img src="./img/kunai1.png" id="kunai1" style='display:none'>
+<img src="./img/kunai2.png" id="kunai2" style='display:none'>
+<canvas width="640" height="480" id="canvas">
+HTML5 Canvas not supported.
+</canvas>
+</br>
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var menu=false;
+var back=false;
+var game_loop=false;
+var p1y;
+var p2y;
+var p1v;
+var p2v;
+var vida1;
+var vida2;
+// kunais personaje 1
+var k1p1x;
+var k1p1y;
+var k2p1x;
+var k2p1y;
+var k3p1x;
+var k3p1y;
+// kunais personaje 2
+var k1p2x;
+var k1p2y;
+var k2p2x;
+var k2p2y;
+var k3p2x;
+var k3p2y;
+ctx.font = "30px Arial";
+ctx.fillText("Loading...",10,50);
+window.addEventListener('load', init);
+canvas.addEventListener('mousemove', function(e){mouseMove(e);}, false);
+canvas.addEventListener('click', function(){mouseClick();}, false);
+window.addEventListener('keydown',keydown);
+window.addEventListener('keyup', keyup);
+window.setInterval(function(){loop()}, 20);
+
+function mouseMove(e){
+var rect = canvas.getBoundingClientRect();
+mouseX = e.clientX - rect.left;
+mouseY = e.clientY - rect.top;
+
+if(menu){
+
+ctx.lineWidth = 3;
+ctx.fillStyle = "#FF8000";
+ctx.fillRect(170,250,300,50);
+ctx.strokeRect(170,250,300,50);
+ctx.fillRect(170,320,300,50);
+ctx.strokeRect(170,320,300,50);
+ctx.fillRect(170,390,300,50);
+ctx.strokeRect(170,390,300,50);
+ctx.font = "40px Arial";
+ctx.lineWidth = 2;
+ctx.fillStyle = "#0080FF";
+ctx.fillText("Play",320,285);
+ctx.strokeText("Play",320,285);
+ctx.fillText("How to play",320,355);
+ctx.strokeText("How to play",320,355);
+ctx.fillText("Credits",320,425);
+ctx.strokeText("Credits",320,425);
+if((mouseX>170)&&(mouseX<470)){
+	ctx.fillStyle = "#FFFF00";
+	if((mouseY>250)&&(mouseY<300)){ctx.fillText("Play",320,285); ctx.strokeText("Play",320,285);}
+	if((mouseY>320)&&(mouseY<370)){ctx.fillText("How to play",320,355); ctx.strokeText("How to play",320,355);}
+	if((mouseY>390)&&(mouseY<440)){ctx.fillText("Credits",320,425); ctx.strokeText("Credits",320,425);}
+}
+}
+
+if(back){
+ctx.font = "25px Arial";
+ctx.lineWidth = 3;
+ctx.fillStyle = "#FF8000";
+ctx.fillRect(5,400,160,75);
+ctx.strokeRect(5,400,160,75);
+ctx.lineWidth = 1;
+ctx.fillStyle = "#0080FF";
+ctx.fillText("Come back", 85,430);
+ctx.strokeText("Come back", 85,430);
+ctx.fillText("to the menu", 85,460);
+ctx.strokeText("to the menu", 85,460);
+if((mouseX>5)&&(mouseX<165)&&(mouseY>400)&&(mouseY<475)){
+	ctx.fillStyle = "#FFFF00";
+	ctx.fillText("Come back", 85,430);
+	ctx.strokeText("Come back", 85,430);
+	ctx.fillText("to the menu", 85,460);
+	ctx.strokeText("to the menu", 85,460);
+}
+
+}
+
+}
+
+function mouseClick(){
+if((menu)&&(mouseX>170)&&(mouseX<470)){
+	ctx.fillStyle = "#FFFF00";
+	if((mouseY>250)&&(mouseY<300)){game();}
+	if((mouseY>320)&&(mouseY<370)){how();}
+	if((mouseY>390)&&(mouseY<440)){credits();}
+}
+
+if((back)&&(mouseX>5)&&(mouseX<165)&&(mouseY>400)&&(mouseY<475)){init();}
+
+}
+
+
+function keydown(r) {
+  if ( r.keyCode == 87 ) {p1v=-7;} //p1 arriba
+  if ( r.keyCode == 83 ) {p1v=7;} //p1 abajo
+  if ( r.keyCode == 70 ) {if(k1p1x>=640){k1p1x=75; k1p1y=p1y+22;}else{if(k2p1x>=640){k2p1x=75; k2p1y=p1y+22;}else{if(k3p1x>=640){k3p1x=75; k3p1y=p1y+22;}}}} //p1 arrow
+  
+  if ( r.keyCode == 38 ) {p2v=-7;} //p2 arriba
+  if ( r.keyCode == 40 ) {p2v=7;} //p2 abajo
+  if ( r.keyCode == 76 ) {if(k1p2x<=-75){k1p2x=490; k1p2y=p2y+22;}else{if(k2p2x<=-75){k2p2x=490; k2p2y=p2y+22;}else{if(k3p2x<=-75){k3p2x=490; k3p2y=p2y+22;}}}} //p1 arrow
+  }
+
+
+function keyup(k) {
+  if ( k.keyCode == 87 ) {if(p1v!=7){p1v=0;}} //p1 arriba
+  if ( k.keyCode == 83 ) {if(p1v!=-7){p1v=0;}} //p1 abajo
+  
+  if ( k.keyCode == 38 ) {if(p2v!=7){p2v=0;}} //p2 arriba
+  if ( k.keyCode == 40 ) {if(p2v!=-7){p2v=0;}} //p2 abajo
+  }
+ 
+function loop(){
+if(game_loop){
+
+//Redefinir posiciones de los jugadores
+if(!(((p1y==80)&&(p1v==-5))||((p1y==405)&&(p1v==5)))){
+p1y=p1y+p1v;
+}
+if(!(((p1y==80)&&(p1v==-5))||((p1y==405)&&(p1v==5)))){
+p2y=p2y+p2v;
+}
+
+//Redefinir posiciones de los kunais
+if(k1p1x<640){k1p1x=k1p1x+15;}
+if(k2p1x<640){k2p1x=k2p1x+15;}
+if(k3p1x<640){k3p1x=k3p1x+15;}
+
+if(k1p2x>-75){k1p2x=k1p2x-15;}
+if(k2p2x>-75){k2p2x=k2p2x-15;}
+if(k3p2x>-75){k3p2x=k3p2x-15;}
+
+//Estas lineas recolocan p1 y p2 en caso de que se pasen del margen
+if(p1y<80){p1y=80;}
+if(p1y>405){p1y=405;}
+if(p2y<80){p2y=80;}
+if(p2y>405){p2y=405;}
+
+//Aquí se comprueban las colisiones
+if(vida2>0){
+if(((p2y-k1p1y)<30)&&((k1p1y-p2y)<75)&&(k1p1x>490)&&(k1p1x<640)){vida2=vida2-1;}
+if(((p2y-k2p1y)<30)&&((k2p1y-p2y)<75)&&(k2p1x>490)&&(k2p1x<640)){vida2=vida2-1;}
+if(((p2y-k3p1y)<30)&&((k3p1y-p2y)<75)&&(k3p1x>490)&&(k3p1x<640)){vida2=vida2-1;}
+}
+else{vida2=0;}
+
+
+if(vida1>0){
+if(((p1y-k1p2y)<30)&&((k1p2y-p1y)<75)&&(k1p2x>-75)&&(k1p2x<75)){vida1=vida1-1;}
+if(((p1y-k2p2y)<30)&&((k2p2y-p1y)<75)&&(k2p2x>-75)&&(k2p2x<75)){vida1=vida1-1;}
+if(((p1y-k3p2y)<30)&&((k3p2y-p1y)<75)&&(k3p2x>-75)&&(k3p2x<75)){vida1=vida1-1;}
+}
+else{vida1=0;}
+// Dibujar imágenes
+ctx.drawImage(fondo,0,0);
+ctx.drawImage(p1,0,p1y);
+ctx.drawImage(p2,565,p2y);
+ctx.drawImage(kunai1,k1p1x,k1p1y);
+ctx.drawImage(kunai1,k2p1x,k2p1y);
+ctx.drawImage(kunai1,k3p1x,k3p1y);
+ctx.drawImage(kunai2,k1p2x,k1p2y);
+ctx.drawImage(kunai2,k2p2x,k2p2y);
+ctx.drawImage(kunai2,k3p2x,k3p2y);
+//Vidas
+ctx.fillStyle = "#FF0000";
+ctx.fillRect(10,15,300,50);
+ctx.fillStyle = "#00FF00";
+ctx.fillRect(10,15,3*vida1,50);
+ctx.strokeRect(10,15,300,50);
+
+ctx.fillStyle = "#FF0000";
+ctx.fillRect(330,15,300,50);
+ctx.fillStyle = "#00FF00";
+ctx.fillRect(630,15,-3*vida2,50);
+ctx.strokeRect(330,15,300,50);
+if(vida2==0){game_loop= false; win(1);}
+if(vida1==0){game_loop= false; win(2);}
+}
+}
+
+function how(){
+menu=false;
+ctx.drawImage(fondo_,0,0);
+ctx.strokeStyle = "#000000";
+ctx.font = "25px Arial";
+ctx.lineWidth = 3;
+ctx.fillStyle = "#FF8000";
+ctx.fillRect(5,400,160,75);
+ctx.strokeRect(5,400,160,75);
+ctx.fillRect(70,10,500,330);
+ctx.strokeRect(70,10,500,330);
+ctx.lineWidth = 1;
+ctx.fillStyle = "#0080FF";
+ctx.fillText("Come back", 85,430);
+ctx.strokeText("Come back", 85,430);
+ctx.fillText("to the menu", 85,460);
+ctx.strokeText("to the menu", 85,460);
+
+ctx.fillStyle = "#FF0000";
+ctx.strokeStyle = "#FFFFFF";
+ctx.lineWidth = 2;
+ctx.font = "50px Arial";
+ctx.fillText("Player two",320,220);
+ctx.strokeText("Player two",320,220);
+ctx.font = "30px Arial";
+ctx.lineWidth = 1;
+ctx.fillText("Arrow Up key - Move up",320,260);
+ctx.strokeText("Arrow Up key - Move up",320,260);
+ctx.fillText("Arrow Down key - Move down",320,290);
+ctx.strokeText("Arrow Down key - Move down",320,290);
+ctx.fillText("L key - Shoot kunai",320,320);
+ctx.strokeText("L key - Shoot kunai",320,320);
+
+ctx.lineWidth = 2;
+ctx.fillStyle = "#00FF00";
+ctx.strokeStyle = "#000000";
+ctx.font = "50px Arial";
+ctx.fillText("Player one",320,60);
+ctx.strokeText("Player one",320,60);
+ctx.font = "30px Arial";
+ctx.lineWidth = 1;
+ctx.fillText("W key - Move up",320,100);
+ctx.strokeText("W key - Move up",320,100);
+ctx.fillText("S key - Move down",320,130);
+ctx.strokeText("S key - Move down",320,130);
+ctx.fillText("F key - Shoot kunai",320,160);
+ctx.strokeText("F key - Shoot kunai",320,160);
+
+back=true;
+}
+
+function credits(){
+menu=false;
+ctx.drawImage(fondo_,0,0);
+ctx.strokeStyle = "#000000";
+ctx.font = "25px Arial";
+ctx.lineWidth = 3;
+ctx.fillStyle = "#FF8000";
+ctx.fillRect(5,400,160,75);
+ctx.strokeRect(5,400,160,75);
+ctx.fillRect(70,10,500,330);
+ctx.strokeRect(70,10,500,330);
+ctx.lineWidth = 1;
+ctx.fillStyle = "#0080FF";
+ctx.fillText("Come back", 85,430);
+ctx.strokeText("Come back", 85,430);
+ctx.fillText("to the menu", 85,460);
+ctx.strokeText("to the menu", 85,460);
+
+ctx.fillStyle = "#FF0000";
+ctx.strokeStyle = "#FFFFFF";
+ctx.lineWidth = 2;
+ctx.font = "50px Arial";
+ctx.fillText("\u00c9zhor Malk\u00e1var",320,220);
+ctx.strokeText("\u00c9zhor Malk\u00e1var",320,220);
+
+ctx.lineWidth = 2;
+ctx.fillStyle = "#00FF00";
+ctx.strokeStyle = "#000000";
+ctx.font = "50px Arial";
+ctx.fillText("Art&Programming",320,160);
+ctx.strokeText("Art&Programming",320,160);
+
+back=true;
+}
+
+function game(){
+menu=false;
+game_loop=true;
+ctx.drawImage(fondo,0,0);
+}
+function win(w){
+ctx.drawImage(fondo_,0,0);
+ctx.font = "80px Arial";
+switch(w){
+	case 1:
+		ctx.fillStyle = "#00FF00";
+		ctx.strokeStyle = "#000000";
+		ctx.lineWidth = 5;
+		break;
+	case 2:
+		ctx.fillStyle = "#FF0000";
+		ctx.strokeStyle = "#FFFFFF";
+		ctx.lineWidth = 3;
+		break;
+}
+
+
+ctx.fillText("Player "+w+" won! :D", 320,170);
+ctx.strokeText("Player "+w+" won! :D", 320,170);
+ctx.strokeStyle = "#000000";
+ctx.font = "25px Arial";
+ctx.lineWidth = 3;
+ctx.fillStyle = "#FF8000";
+ctx.fillRect(5,400,160,75);
+ctx.strokeRect(5,400,160,75);
+ctx.lineWidth = 1;
+ctx.fillStyle = "#0080FF";
+ctx.fillText("Come back", 85,430);
+ctx.strokeText("Come back", 85,430);
+ctx.fillText("to the menu", 85,460);
+ctx.strokeText("to the menu", 85,460);
+back=true;
+}
+function init(){
+//Se devuelven todos los valores a su estado inicial
+vida1=100;
+vida2=100;
+p1y=80;
+p2y=405;
+p1v=0;
+p2v=0;
+vida1=100;
+vida2=100;
+// kunais personaje 1
+k1p1x=640;
+k1p1y=0;
+k2p1x=640;
+k2p1y=0;
+k3p1x=640;
+k3p1y=0;
+// kunais personaje 2
+k1p2x=-75;
+k1p2y=0;
+k2p2x=-75;
+k2p2y=0;
+k3p2x=-75;
+k3p2y=0;
+ctx.strokeStyle = "#000000";
+ctx.textAlign="center";
+ctx.drawImage(fondo_,0,0);
+ctx.font = "150px Arial";
+ctx.fillStyle = "#FF0000";
+ctx.lineWidth = 10;
+ctx.fillText("Kalls 2",320,150);
+ctx.strokeText("Kalls 2",320,150);
+ctx.lineWidth = 3;
+ctx.fillStyle = "#FF8000";
+ctx.fillRect(170,250,300,50);
+ctx.strokeRect(170,250,300,50);
+ctx.fillRect(170,320,300,50);
+ctx.strokeRect(170,320,300,50);
+ctx.fillRect(170,390,300,50);
+ctx.strokeRect(170,390,300,50);
+ctx.font = "40px Arial";
+ctx.lineWidth = 2;
+ctx.fillStyle = "#0080FF";
+ctx.fillText("Play",320,285);
+ctx.strokeText("Play",320,285);
+ctx.fillText("How to play",320,355);
+ctx.strokeText("How to play",320,355);
+ctx.fillText("Credits",320,425);
+ctx.strokeText("Credits",320,425);
+back=false;
+menu=true;
+mouseMove();
+mouseClick();
+}
+</script>
+</body>
+</html>

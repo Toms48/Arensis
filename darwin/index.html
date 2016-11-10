@@ -1,0 +1,157 @@
+<html>
+  <head>
+    <style>
+    #myCanvas{
+      border:1px solid #000000;
+    }
+    body{
+      background-color: #FFFFFF;
+      padding: 30px;
+    }
+
+    #listado{
+      position: absolute;
+      text-align: right;
+      right: 30px;
+    }
+
+
+    </style>
+  </head>
+  <body>
+    <div id="listado"></div>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+    <script>
+    var numeroDeAdanes = 2;
+
+    var individuos = [];
+
+    var atributo = 1;
+    var nTamano;
+    var nVelocidad;
+    var nVida;
+    var nDescendencia;
+    var nvx;
+    var nvy;
+
+
+    /*Individuo {x, y, vx, vy, tamaño, velocidad, tiempo de vida, descendencia}
+    Cada variable puede tomar valores entre 0 y 100 (excepto x e y)
+    La suma de todas las variables (excepto x e y) es igual a 100
+    */
+
+    //Creando adanes
+    for(var adan=0; adan<=numeroDeAdanes-1; adan++){
+      nTamano = 0;
+      nVelocidad = 0;
+      nVida = 0;
+      nDescendencia = 0;
+
+      while( (nTamano+nVelocidad+nVida+nDescendencia) < 100 ){
+        switch (atributo) {
+          case 1:
+            nTamano += Math.round(10*Math.random());
+            atributo++;
+            break;
+          case 2:
+            nVelocidad += Math.round(10*Math.random());
+            atributo++;
+            break;
+          case 3:
+            nVida += Math.round(10*Math.random());
+            atributo++;
+            break;
+          case 4:
+            nDescendencia += Math.round(10*Math.random());
+            atributo++;
+            break;
+          case 5:
+            atributo = 1;
+            break;
+
+        }
+      }
+        //Generar un vector unitario aleatorio
+        //Se multiplica por Math.round(Math.random())*2-1 para que el número sea positivo o negativo aleatoriomente (lo multiplica por -1 o +1)
+        nvx = Math.random() * (Math.round(Math.random())*2-1);
+        nvy = Math.sqrt(1-nvx*nvx) * (Math.round(Math.random())*2-1);
+
+        //Multiplicar las componentes del vector unitario por la velocidad
+        nvx = nvx*nVelocidad;
+        nvy = nvy*nVelocidad;
+
+
+        individuos.push({
+          x:Math.round(500*Math.random()),
+          y:Math.round(500*Math.random()),
+          tamano: nTamano,
+          velocidad: nVelocidad,
+          vx: nvx,
+          vy: nvy,
+          vida: nVida,
+          descendencia: nDescendencia
+        });
+        //Actualiza el listado
+        document.getElementById("listado").innerHTML += "<b>Individuo "+adan+"</b><br>"+
+        "Tama&ntilde;o: "+nTamano+" <progress value=\""+nTamano+"\" max=\"100\"></progress><br>"+
+        "<span style=\"color:red;\">Velocidad: "+nVelocidad+"</span> <progress value=\""+nVelocidad+"\" max=\"100\"></progress><br>"+
+        "<span style=\"color:green;\">Vida: "+nVida+"</span> <progress value=\""+nVida+"\" max=\"100\"></progress><br>"+
+        "<span style=\"color:blue;\">Descendencia: "+nDescendencia+"</span> <progress value=\""+nDescendencia+"\" max=\"100\"></progress><br><br>"
+    }
+
+
+    //Define el contexto
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.lineWidth = 5;
+
+    //Inicializa el bucle principal
+    window.setInterval(function(){loop()}, 20);
+
+    function loop(){ //Bucle principal
+      //Dibuja el fondo
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0,0,800,800);
+
+      //Para cada individuo
+      for(var i=0; i<=individuos.length-1; i++){
+
+        //Define la forma del individuo
+        ctx.beginPath();
+        ctx.arc(individuos[i].x, individuos[i].y, individuos[i].tamano, 0, 2*Math.PI);
+
+        //Define su color
+        ctx.fillStyle = "rgb("+Math.round(individuos[i].velocidad*255/100)+","+Math.round(individuos[i].vida*255/100)+","+Math.round(individuos[i].descendencia*255/100)+")";
+
+        //Muestra el individuo
+        ctx.fill();
+        ctx.stroke();
+
+        //Actualiza la posición del individuo
+        individuos[i].x += individuos[i].vx/5;
+        individuos[i].y += individuos[i].vy/5;
+
+        //Comprueba y activa colisiones
+        if(individuos[i].x>=500){
+          individuos[i].x = 500;
+          individuos[i].vx *= -1;
+        }
+        if(individuos[i].x<=0){
+          individuos[i].x = 0;
+          individuos[i].vx *= -1;
+        }
+        if(individuos[i].y>=500){
+          individuos[i].y = 500;
+          individuos[i].vy *= -1;
+        }
+        if(individuos[i].y<=0){
+          individuos[i].y = 0;
+          individuos[i].vy *= -1;
+        }
+
+      }
+    }
+
+    </script>
+  </body>
+<html>

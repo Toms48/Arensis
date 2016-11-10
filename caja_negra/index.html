@@ -1,0 +1,89 @@
+<html>
+<head>
+  <title>Caja Negra</title>
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <style>
+  body {
+    text-align: center;
+    color: #BB0000;
+    margin: 30px;
+    background-color: black;
+    line-height: 500%;
+  }
+  span{
+    margin-left: -250px;
+    margin-right: 200px;
+    margin-top: 10px;
+    position: relative;
+    top: -15px;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 5px 5px 10px white;
+    background: rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+  }
+  h1{
+    font-size: 100px;
+    text-shadow: 5px 5px 10px white;
+  }
+  div{
+    font-size: 20px;
+    font-weight: bold;
+  }
+  img{
+    border-radius: 15px;
+    height: 300px;
+    width: 300px;
+  }
+  </style>
+</head>
+<body>
+  <h1>Caja Negra</h1>
+  <h1 id="cargando">Cargando...</h1>
+  <div id="descarga"></div>
+<script type='text/javascript'>
+  var clave = prompt("Por favor, introduzca su clave de acceso:");
+  var socket = io.connect("http://grumpyworld-arensisgames.rhcloud.com/");
+  var cantidad;
+  var i=0;
+  var objeto = {
+    clave: clave,
+    i: i
+  }
+  socket.emit("caja negra count", objeto);
+
+  socket.on("caja negra count", function(qty){
+    cantidad = qty;
+    for(i; i<=cantidad; i++){
+      objeto = {
+        clave: clave,
+        i: i
+      }
+      socket.emit("caja negra", objeto);
+    }
+  });
+
+  socket.on('caja negra', function(actriz){
+    document.getElementById("descarga").innerHTML="Descargando datos de actrices...";
+    document.getElementById("cargando").style.display="none";
+    var img = document.createElement("img");
+    img.setAttribute("src", "data:image/png;base64,"+actriz.imagen);
+    document.body.appendChild(img);
+    var nombre = document.createElement("span");
+    nombre.innerHTML = actriz.nombre;
+    document.body.appendChild(nombre);
+    i++;
+    objeto = {
+      clave: clave,
+      i: i
+    }
+    socket.emit("caja negra", objeto);
+  });
+
+  socket.on('caja negra cargado', function(){
+    document.getElementById("descarga").innerHTML="Todos los datos de actrices han sido descargados correctamente.";
+  });
+
+</script>
+</body>
+</html>
