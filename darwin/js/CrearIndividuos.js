@@ -25,19 +25,19 @@ function crearIndividuos(numeroDeIndividuos){
       while( (nTamano+nVelocidad+nVida+nDescendencia) < 100 ){
         switch (atributo) {
           case 1:
-            nTamano += Math.round(10*Math.random());
+            nTamano += Math.round(Math.random());
             atributo++;
             break;
           case 2:
-            nVelocidad += Math.round(10*Math.random());
+            nVelocidad += Math.round(Math.random());
             atributo++;
             break;
           case 3:
-            nVida += Math.round(10*Math.random());
+            nVida += Math.round(Math.random());
             atributo++;
             break;
           case 4:
-            nDescendencia += Math.round(10*Math.random());
+            nDescendencia += Math.round(Math.random());
             atributo++;
             break;
           case 5:
