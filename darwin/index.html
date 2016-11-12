@@ -15,7 +15,7 @@
       right: 30px;
     }
     </style>
-	
+
 	<script src="./js/CrearIndividuos.js"></script>
 	<script src="./js/BucleDeRenderizado.js"></script>
   </head>
@@ -26,26 +26,31 @@
 	/*ArensisDarwin
 	ANALISIS
 	Simula un ecosistema basado en la selección natural.
-	
+
 	ENTRADAS
 	No tiene entradas
-	
+
 	SALIDAS
 	Muestra una animación de los individuos en un canvas
-	
+
 	RESTRICCIONES
 	No tiene restricciones
-	
+
 	SUPOSICIONES
 	El usuario conoce la la Teoría de la Evolución de las Especies de Charles Darwin
-	
+
 	COMENTARIOS
 	Cada individuo tendrá 4 atributos: tamaño, velocidad, esperanza de vida y descendencia
 	Cada individuo tendrá aproximadamente un máximo de 100 puntos a repartir entre sus atributos, que simulan la limitación de alimento
-	
-	
+
+
 	PSEUDOCÓDIGO GENERALIZADO
-	
+  inicio
+    Crear adanes
+    Definir el contexto
+    Inicializar el bucle de renderizado
+  fin
+
 	*/
     var numeroDeAdanes = 2;
 	var individuos = [];
@@ -54,12 +59,12 @@
     //Crear adanes
 	crearIndividuos(numeroDeAdanes);
 
-    //Define el contexto
+    //Definir el contexto
     var c = document.getElementById("myCanvas");
     var ctx = c.getContext("2d");
     ctx.lineWidth = 5;
 
-    //Inicializa el bucle de renderizado
+    //Inicializar el bucle de renderizado
     window.setInterval(function(){loop()}, 20);
 
     </script>

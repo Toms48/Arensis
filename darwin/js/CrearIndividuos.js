@@ -1,20 +1,20 @@
-	/*Individuo {x, y, vx, vy, tamaño, velocidad, tiempo de vida, descendencia}
+	/*Individuo {x, y, vx, vy, tamaï¿½o, velocidad, tiempo de vida, descendencia}
     Cada variable puede tomar valores entre 0 y 100 (excepto x e y)
     La suma de todas las variables (excepto x e y) es igual a 100
     */
-	
+
 	var atributo = 1;
-	
+
 	var nTamano;
     var nVelocidad;
     var nVida;
     var nDescendencia;
     var nvx;
     var nvy;
-	
-	
+
+
 function crearIndividuos(numeroDeIndividuos){
-    
+
 	//Asignar atributos aleatorios
     for(var adan=0; adan<=numeroDeIndividuos-1; adan++){
       nTamano = 0;
@@ -47,7 +47,7 @@ function crearIndividuos(numeroDeIndividuos){
         }
       }
         //Generar un vector unitario aleatorio para el movimiento
-        //Se multiplica por (Math.round(Math.random())*2-1) para que el número sea positivo o negativo aleatoriomente (lo multiplica por -1 o +1)
+        	//Se multiplica por (Math.round(Math.random())*2-1) para que el nÃºmero sea positivo o negativo aleatoriomente (lo multiplica por -1 o +1)
         nvx = Math.random() * (Math.round(Math.random())*2-1);
         nvy = Math.sqrt(1-nvx*nvx) * (Math.round(Math.random())*2-1);
 
@@ -55,7 +55,7 @@ function crearIndividuos(numeroDeIndividuos){
         nvx = nvx*nVelocidad;
         nvy = nvy*nVelocidad;
 
-		//Añadir al array principal
+		//AÃ±adir al array principal
         individuos.push({
           x:Math.round(500*Math.random()),
           y:Math.round(500*Math.random()),
@@ -73,5 +73,5 @@ function crearIndividuos(numeroDeIndividuos){
         "<span style=\"color:red;\">Velocidad: "+nVelocidad+"</span> <progress value=\""+nVelocidad+"\" max=\"100\"></progress><br>"+
         "<span style=\"color:green;\">Esperanza de vida: "+nVida+"</span> <progress value=\""+nVida+"\" max=\"100\"></progress><br>"+
         "<span style=\"color:blue;\">Descendencia: "+nDescendencia+"</span> <progress value=\""+nDescendencia+"\" max=\"100\"></progress><br><br>"
-    }	
+    }
 }
