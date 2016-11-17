@@ -42,7 +42,7 @@
         }
 		
 		//Comprobar muerte
-		if(individuos[i].muerte == Math.floor(Date.now()/1000)){
+		if(individuos[i].muerte <= Math.floor(Date.now()/1000)){
 			individuos.splice(i, 1);
 		}
 
