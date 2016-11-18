@@ -1,5 +1,5 @@
 //BucleDeRenderizado
-    function loop(){
+    function loop(individuos, ctx){
       
 	  //Dibuja el fondo
       ctx.fillStyle = "#FFFFFF";

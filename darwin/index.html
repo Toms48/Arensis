@@ -2,28 +2,15 @@
   <head>
     <link rel="icon" href="../img/arensis.ico"/>
     <title>Arensis Darwin</title>
-    <style>
-    #myCanvas{
-      border:1px solid #000000;
-    }
-    body{
-      background-color: #FFFFFF;
-      padding: 30px;
-    }
-
-    #listado{
-      position: absolute;
-      text-align: right;
-      right: 30px;
-    }
-    </style>
-
-	<script src="./js/CrearIndividuos.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	
+	<script src="./js/CrearIndividuo.js"></script>
 	<script src="./js/BucleDeRenderizado.js"></script>
   </head>
   <body>
     <div id="listado"></div>
-    <canvas id="myCanvas" width="500" height="500"></canvas>
+    <canvas id="render" width="500" height="500"></canvas>
     <script>
 	/*ArensisDarwin
 	ANALISIS
@@ -55,19 +42,21 @@
 
 	*/
     var numeroDeAdanes = 2;
-	var individuos = [];
+	var individuosArray = [];
 
 
     //Crear adanes
-	crearIndividuos(numeroDeAdanes);
+	for(var adan=0; adan<=numeroDeAdanes-1; adan++){
+		individuosArray[adan] = crearIndividuo("listado");
+		}
 
     //Definir el contexto
-    var c = document.getElementById("myCanvas");
+    var c = document.getElementById("render");
     var ctx = c.getContext("2d");
     ctx.lineWidth = 5;
 
     //Inicializar el bucle de renderizado
-    window.setInterval(function(){loop()}, 20);
+    window.setInterval(function(){loop(individuosArray,ctx)}, 20);
 
     </script>
   </body>

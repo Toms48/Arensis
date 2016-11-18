@@ -10,13 +10,15 @@
     var nVida;
     var nDescendencia;
     var nvx;
-    var nvy;
+	var nvy;
+
+	var individuo = [];
+	
 
 
-function crearIndividuos(numeroDeIndividuos){
+function crearIndividuo(listado){
 
 	//Asignar atributos aleatorios
-    for(var adan=0; adan<=numeroDeIndividuos-1; adan++){
       nTamano = 0;
       nVelocidad = 0;
       nVida = 0;
@@ -56,7 +58,7 @@ function crearIndividuos(numeroDeIndividuos){
         nvy = nvy*nVelocidad;
 
 		//Añadir al array principal
-        individuos.push({
+        individuo = ({
           x:Math.round(500*Math.random()),
           y:Math.round(500*Math.random()),
           tamano: nTamano,
@@ -67,11 +69,13 @@ function crearIndividuos(numeroDeIndividuos){
 		  muerte: Math.floor(Date.now()/1000) + nVida,
           descendencia: nDescendencia
         });
+		
         //Actualiza el listado
-        document.getElementById("listado").innerHTML += "<b>Individuo "+adan+"</b><br>"+
+        document.getElementById(listado).innerHTML += "<b>Individuo "+adan+"</b><br>"+
         "Tama&ntilde;o: "+nTamano+" <progress value=\""+nTamano+"\" max=\"100\"></progress><br>"+
         "<span style=\"color:red;\">Velocidad: "+nVelocidad+"</span> <progress value=\""+nVelocidad+"\" max=\"100\"></progress><br>"+
         "<span style=\"color:green;\">Esperanza de vida: "+nVida+"</span> <progress value=\""+nVida+"\" max=\"100\"></progress><br>"+
         "<span style=\"color:blue;\">Descendencia: "+nDescendencia+"</span> <progress value=\""+nDescendencia+"\" max=\"100\"></progress><br><br>"
-    }
+		
+		return individuo;
 }

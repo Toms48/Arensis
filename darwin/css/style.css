@@ -1,0 +1,13 @@
+#render{
+      border:1px solid #000000;
+    }
+    body{
+      background-color: #FFFFFF;
+      padding: 30px;
+    }
+
+    #listado{
+      position: absolute;
+      text-align: right;
+      right: 30px;
+    }
