@@ -18,7 +18,13 @@
         //Muestra el individuo
         ctx.fill();
         ctx.stroke();
-
+		
+		//Muestra su número
+		ctx.textAlign="center";
+		ctx.textBaseline="middle";
+		ctx.font = "20px Arial"
+		ctx.fillStyle = "#FFFFFF"
+		ctx.fillText(i,individuos[i].x,individuos[i].y);
         //Actualiza la posición del individuo
         individuos[i].x += individuos[i].vx/5;
         individuos[i].y += individuos[i].vy/5;
@@ -45,6 +51,8 @@
 		if(individuos[i].muerte <= Math.floor(Date.now()/1000)){
 			individuos.splice(i, 1);
 		}
+		
+		
 
 		
       }
