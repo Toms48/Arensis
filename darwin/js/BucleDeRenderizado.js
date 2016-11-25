@@ -24,7 +24,8 @@
 		ctx.textBaseline="middle";
 		ctx.font = "20px Arial"
 		ctx.fillStyle = "#FFFFFF"
-		ctx.fillText(i,individuos[i].x,individuos[i].y);
+		ctx.fillText(individuos[i].indice,individuos[i].x,individuos[i].y);
+		
         //Actualiza la posición del individuo
         individuos[i].x += individuos[i].vx/5;
         individuos[i].y += individuos[i].vy/5;
@@ -51,9 +52,11 @@
 		if(individuos[i].muerte <= Math.floor(Date.now()/1000)){
 			individuos.splice(i, 1);
 		}
-		
-		
-
-		
+		//Reproducción
+		for(var otroIndividuo = i+1; otroIndividuo<=individuos.length-1; otroIndividuo++){
+			if(individuos[i].fertil>Math.floor(Date.now()/1000) && individuos[otroIndividuo].fertil>Math.floor(Date.now()/1000)){
+				individuosArray[adan] = crearIndividuo("listado", indice);
+			}
+		}
       }
     }

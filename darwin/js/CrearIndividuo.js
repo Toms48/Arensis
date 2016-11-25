@@ -3,6 +3,7 @@
 	
 	PSEUDOCÓDIGO GENERALIZADO
 	inicio
+		Aumenta el número de individuos
 		Si el individuop no tiene padres
 			Asignar atributos aleatorios
 		fin_si
@@ -20,7 +21,7 @@
     Cada variable puede tomar valores entre 0 y 100 (excepto x e y)
     La suma de todas las variables (excepto x e y) es igual a 100
     */
-function crearIndividuo(listado, padre, madre){
+function crearIndividuo(listado, numero , padre, madre){
 	
 	var atributo = 1;
 
@@ -31,7 +32,9 @@ function crearIndividuo(listado, padre, madre){
     var nuevoVx;
 	var nuevoVy;
 
-	var individuo;
+	numero.individuos++;
+	
+	//Aumenta el número de individuos
 	
 	
 	//Si el individuo no tiene padres
@@ -93,11 +96,13 @@ function crearIndividuo(listado, padre, madre){
 	  vy: nuevoVy,
 	  vida: nuevoVida,
 	  muerte: Math.floor(Date.now()/1000) + nuevoVida,
-	  descendencia: nuevoDescendencia
+	  descendencia: nuevoDescendencia,
+	  indice: numero.individuos,
+	  fertil: 0
 	};
 	
 	//Actualiza el listado
-	document.getElementById(listado).innerHTML += "<b>Individuo "+adan+"</b><br>"+
+	document.getElementById(listado).innerHTML += "<b>Individuo "+numero.individuos+"</b><br>"+
 	"Tama&ntilde;o: "+nuevoTamano+" <progress value=\""+nuevoTamano+"\" max=\"100\"></progress><br>"+
 	"<span style=\"color:red;\">Velocidad: "+nuevoVelocidad+"</span> <progress value=\""+nuevoVelocidad+"\" max=\"100\"></progress><br>"+
 	"<span style=\"color:green;\">Esperanza de vida: "+nuevoVida+"</span> <progress value=\""+nuevoVida+"\" max=\"100\"></progress><br>"+

@@ -43,11 +43,12 @@
 	*/
     var numeroDeAdanes = 2;
 	var individuosArray = [];
+	var indice = {"individuos":0}
 
 
     //Crear adanes
 	for(var adan=0; adan<=numeroDeAdanes-1; adan++){
-		individuosArray[adan] = crearIndividuo("listado");
+		individuosArray[adan] = crearIndividuo("listado", indice);
 		}
 
     //Definir el contexto
