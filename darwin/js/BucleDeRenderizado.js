@@ -1,3 +1,5 @@
+
+
 //BucleDeRenderizado
     function loop(individuos, ctx){
       

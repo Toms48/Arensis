@@ -1,25 +1,7 @@
 	/*
-	CrearIndividuo
-	
-	PSEUDOCÓDIGO GENERALIZADO
-	inicio
-		Aumenta el número de individuos
-		Si el individuop no tiene padres
-			Asignar atributos aleatorios
-		fin_si
-		Si_no
-			Asignar atributos a partir de los padres
-		fin_si_no
-		
-		Generar un vector unitario aleatorio para el movimiento
-		Multiplicar las componentes del vector unitario por la velocidad
-		Crear objeto individuo
-		Actualiza el listado		
-	fin
-	
-	Individuo {x, y, vx, vy, tama�o, velocidad, tiempo de vida, descendencia}
-    Cada variable puede tomar valores entre 0 y 100 (excepto x e y)
-    La suma de todas las variables (excepto x e y) es igual a 100
+	Prototipo de objeto individuo {x, y, tamano, velocidad, vx, vy, vida, muerte, descendencia, indice, fertil}
+    Las variables tamano, velocidad, vida y descendencia.
+    La suma de esas variables es igual a 100
     */
 function crearIndividuo(listado, numero , padre, madre){
 	
@@ -110,3 +92,22 @@ function crearIndividuo(listado, numero , padre, madre){
 	
 	return individuo;
 }
+
+	CrearIndividuo
+	
+	PSEUDOCÓDIGO GENERALIZADO
+	inicio
+		Aumenta el número de individuos
+		Si el individuop no tiene padres
+			Asignar atributos aleatorios
+		fin_si
+		Si_no
+			Asignar atributos a partir de los padres
+		fin_si_no
+		
+		Generar un vector unitario aleatorio para el movimiento
+		Multiplicar las componentes del vector unitario por la velocidad
+		Crear objeto individuo
+		Actualiza el listado		
+	fin
+	
